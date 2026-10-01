@@ -10,11 +10,13 @@ public class Message : Entity
 
     public User User { get; private set; } = null!;
 
+    public Guid ConversationId { get; private set; }
+
     public DateTimeOffset UpdatedAt { get; private set; }
 
     private Message() { }
 
-    public static Message Create(User user, string text)
+    public static Message Create(User user, Guid conversationId, string text)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(text);
 
@@ -22,11 +24,14 @@ public class Message : Entity
 
         if (user.Id == Guid.Empty) throw new ArgumentException();
 
+        if (conversationId == Guid.Empty) throw new ArgumentException();
+
         var now = DateTimeOffset.UtcNow;
         return new Message
         {
             Id = Guid.NewGuid(),
             CreatedAt = now,
+            ConversationId = conversationId,
             Text = text,
             UserId = user.Id,
             User = user,

@@ -1,4 +1,5 @@
 using Chat.Api.Hubs;
+using Chat.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
 builder.Services.AddMemoryCache(options =>
     new MemoryCacheOptions());
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddCors(option =>
         option.AddDefaultPolicy(policy =>

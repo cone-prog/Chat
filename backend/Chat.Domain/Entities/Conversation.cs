@@ -2,30 +2,30 @@ using Chat.Domain.Abstractions;
 
 namespace Chat.Domain.Entities;
 
-public class Chat : Entity
+public class Conversation : Entity
 {
     private readonly List<ChatParticipant> participants = new();
 
-    public IReadOnlyCollection<ChatParticipant> Participant => participants.AsReadOnly();
+    public IReadOnlyCollection<ChatParticipant> Participants => participants.AsReadOnly();
 
     private readonly List<Message> messages = new();
 
     public IReadOnlyCollection<Message> Messages => messages.AsReadOnly();
 
-    private Chat() { }
+    private Conversation() { }
 
-    public static Chat Create(User user)
+    public static Conversation Create(User user)
     {
         if (user is null) throw new ArgumentException();
 
         var id = Guid.NewGuid();
-        var chat = new Chat
+        var conversation = new Conversation
         {
             Id = id,
             CreatedAt = DateTimeOffset.UtcNow,
         };
 
-        chat.participants.Add(ChatParticipant.Create(user.Id, chat.Id));
-        return chat;
+        conversation.participants.Add(ChatParticipant.Create(user, conversation));
+        return conversation;
     }
 }
