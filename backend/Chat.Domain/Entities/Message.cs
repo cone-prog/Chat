@@ -1,8 +1,6 @@
-using Chat.Domain.Abstractions;
-
 namespace Chat.Domain.Entities;
 
-public class Message : Entity
+public class Message
 {
     public string Text { get; private set; } = null!;
 
@@ -13,29 +11,4 @@ public class Message : Entity
     public Guid ConversationId { get; private set; }
 
     public DateTimeOffset UpdatedAt { get; private set; }
-
-    private Message() { }
-
-    public static Message Create(User user, Guid conversationId, string text)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(text);
-
-        if (user is null) throw new ArgumentException();
-
-        if (user.Id == Guid.Empty) throw new ArgumentException();
-
-        if (conversationId == Guid.Empty) throw new ArgumentException();
-
-        var now = DateTimeOffset.UtcNow;
-        return new Message
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = now,
-            ConversationId = conversationId,
-            Text = text,
-            UserId = user.Id,
-            User = user,
-            UpdatedAt = now
-        };
-    }
 }
