@@ -33,7 +33,6 @@ public class CreateConversationStorage(ChatDbContext dbContext) : ICreateConvers
         return new Domain.Entities.Conversation
         {
             Id = newConversation.Id,
-            UserId = newConversation.Participants[0].UserId,
             Name = newConversation.Name
         };
     }

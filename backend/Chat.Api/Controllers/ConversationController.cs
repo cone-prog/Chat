@@ -8,9 +8,10 @@ namespace Chat.Api.Controllers;
 public class ConversationController : ControllerBase
 {
     public async Task<ActionResult<ConversationDto>> GetConversationById(Guid conversationId,
+        [FromServices]
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+
     }
 
     public async Task<ActionResult> CreateConversation(string name, CancellationToken cancellationToken)

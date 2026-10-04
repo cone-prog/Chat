@@ -10,7 +10,7 @@ public class GetConversationByIdUseCase(
     IGetConversationByIdStorage storage,
     IIdentityProvider identityProvider,
     IIntentionManager intentionManager)
-    : IGetCoversationByIdUseCase
+    : IGetConversationByIdUseCase
 {
     public async Task<Conversation> Execute(Guid id, CancellationToken cancellationToken)
     {

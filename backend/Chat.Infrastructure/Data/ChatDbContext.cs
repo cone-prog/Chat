@@ -8,10 +8,10 @@ public class ChatDbContext : DbContext, IChatDbContext
 {
     public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options) { }
 
-    DbSet<ChatParticipant> ChatParticipants => Set<ChatParticipant>();
-    DbSet<Conversation> Conversations => Set<Conversation>();
-    DbSet<Message> Messages => Set<Message>();
-    DbSet<User> Users => Set<User>();
+    internal DbSet<ChatParticipant> ChatParticipants => Set<ChatParticipant>();
+    internal DbSet<Conversation> Conversations => Set<Conversation>();
+    internal DbSet<Message> Messages => Set<Message>();
+    internal DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

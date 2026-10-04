@@ -14,7 +14,7 @@ public class GetConversationByIdUseCaseShould
     private readonly ISetup<IGetConversationByIdStorage, Task<Conversation?>> getConversationByidSetup;
     private readonly ISetup<IIdentity, Guid> getCurrentUserIdSetup;
     private readonly ISetup<IIntentionManager, bool> intentionIsAllowedSetup;
-    private readonly IGetCoversationByIdUseCase sut;
+    private readonly IGetConversationByIdUseCase sut;
     private readonly Mock<IGetConversationByIdStorage> storage;
     private readonly Mock<IIntentionManager> intentionManager;
 
