@@ -1,4 +1,3 @@
-using System.Security.Principal;
 using Chat.Api.Hubs;
 using Chat.Domain.Authentication;
 using Chat.Domain.Authorization;
@@ -13,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
+builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
+
 builder.Services.AddMemoryCache(options =>
     new MemoryCacheOptions());
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -23,6 +26,7 @@ builder.Services.AddScoped<ICreateConversationUseCase, CreateConversationUseCase
 builder.Services.AddScoped<IIntentionManager, IntentionManager>();
 builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
 builder.Services.AddScoped<IGetConversationByIdUseCase, GetConversationByIdUseCase>();
+builder.Services.AddScoped<IGetConversationByIdStorage, GetConversationByIdStorage>();
 builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
 
 builder.Services.AddCors(option =>
@@ -38,11 +42,10 @@ builder.Services.AddCors(option =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
+app.MapControllers();
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseCors();
 app.MapHub<ChatHub>("/chat");
 app.UseHttpsRedirection();

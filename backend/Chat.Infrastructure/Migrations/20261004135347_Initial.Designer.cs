@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Chat.Infrastructure.Migrations
 {
     [DbContext(typeof(ChatDbContext))]
-    [Migration("20261001132344_AddedNameForConversation")]
-    partial class AddedNameForConversation
+    [Migration("20261004135347_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Chat.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Chat.Domain.Entities.ChatParticipant", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.ChatParticipant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace Chat.Infrastructure.Migrations
                     b.ToTable("ChatParticipants");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.Conversation", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.Conversation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace Chat.Infrastructure.Migrations
                     b.ToTable("Conversations");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.Message", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +98,7 @@ namespace Chat.Infrastructure.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.User", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,15 +124,15 @@ namespace Chat.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.ChatParticipant", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.ChatParticipant", b =>
                 {
-                    b.HasOne("Chat.Domain.Entities.Conversation", "Conversation")
+                    b.HasOne("Chat.Infrastructure.Models.Conversation", "Conversation")
                         .WithMany("Participants")
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Chat.Domain.Entities.User", "User")
+                    b.HasOne("Chat.Infrastructure.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -143,15 +143,15 @@ namespace Chat.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.Message", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.Message", b =>
                 {
-                    b.HasOne("Chat.Domain.Entities.Conversation", null)
+                    b.HasOne("Chat.Infrastructure.Models.Conversation", null)
                         .WithMany("Messages")
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Chat.Domain.Entities.User", "User")
+                    b.HasOne("Chat.Infrastructure.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -160,7 +160,7 @@ namespace Chat.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.Conversation", b =>
+            modelBuilder.Entity("Chat.Infrastructure.Models.Conversation", b =>
                 {
                     b.Navigation("Messages");
 

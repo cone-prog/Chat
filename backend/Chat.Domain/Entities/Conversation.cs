@@ -1,3 +1,5 @@
+using System.Data;
+
 namespace Chat.Domain.Entities;
 
 public class Conversation
@@ -5,4 +7,6 @@ public class Conversation
     public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
+
+    public DateTimeOffset CreatedAt { get; set; }
 }

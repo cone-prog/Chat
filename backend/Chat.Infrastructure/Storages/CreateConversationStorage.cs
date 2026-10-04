@@ -29,11 +29,13 @@ public class CreateConversationStorage(ChatDbContext dbContext) : ICreateConvers
 
         newConversation.Participants.Add(newParticipant);
         await dbContext.AddAsync(newConversation, cancellationToken);
+        await dbContext.AddAsync(newParticipant, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
         return new Domain.Entities.Conversation
         {
             Id = newConversation.Id,
-            Name = newConversation.Name
+            Name = newConversation.Name,
+            CreatedAt = newConversation.CreatedAt
         };
     }
 }

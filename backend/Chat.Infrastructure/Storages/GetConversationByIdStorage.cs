@@ -17,7 +17,8 @@ public class GetConversationByIdStorage(ChatDbContext dbContext)
                 c => new Conversation
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    CreatedAt = c.CreatedAt
                 })
             .FirstOrDefaultAsync(cancellationToken);
     }
