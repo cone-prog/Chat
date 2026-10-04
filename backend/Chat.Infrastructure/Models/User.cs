@@ -1,6 +1,6 @@
 namespace Chat.Infrastructure.Models;
 
-public class User
+internal class User
 {
     public Guid Id { get; set; }
 

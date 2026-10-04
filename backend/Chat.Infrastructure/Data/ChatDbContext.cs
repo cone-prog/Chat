@@ -1,5 +1,5 @@
 using Chat.Domain.Data.DbContext;
-using Chat.Domain.Entities;
+using Chat.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Data;

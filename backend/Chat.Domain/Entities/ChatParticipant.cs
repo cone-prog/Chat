@@ -3,8 +3,6 @@ namespace Chat.Domain.Entities;
 
 public class ChatParticipant
 {
-    public User User { get; private set; } = null!;
-
     public Guid UserId { get; private set; }
 
     public Conversation Conversation { get; private set; } = null!;

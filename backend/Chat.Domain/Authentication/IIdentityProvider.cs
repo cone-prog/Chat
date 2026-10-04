@@ -4,3 +4,5 @@ public interface IIdentityProvider
 {
     public IIdentity Current { get; }
 }
+
+

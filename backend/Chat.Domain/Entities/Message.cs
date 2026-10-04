@@ -6,8 +6,6 @@ public class Message
 
     public Guid UserId { get; private set; }
 
-    public User User { get; private set; } = null!;
-
     public Guid ConversationId { get; private set; }
 
     public DateTimeOffset UpdatedAt { get; private set; }
