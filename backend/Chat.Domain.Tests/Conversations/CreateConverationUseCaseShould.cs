@@ -3,6 +3,8 @@ using Chat.Domain.Authorization;
 using Chat.Domain.Entities;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.Intentions;
+using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 using Moq.Language.Flow;
 
@@ -33,7 +35,13 @@ public class CreateConverationUseCaseShould
         intentionManager = new Mock<IIntentionManager>();
         intentionIsAllowedSetup = intentionManager.Setup(i => i.IsAllowed(It.IsAny<ConversationIntentions>()));
 
-        sut = new CreateConversationUseCase(intentionManager.Object, storage.Object, identityProvider.Object);
+        var validator = new Mock<IValidator<CreateConversationCommand>>();
+        validator.Setup(v => v.ValidateAsync(It.IsAny<CreateConversationCommand>(),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+
+        sut = new CreateConversationUseCase(validator.Object, intentionManager.Object,
+            storage.Object, identityProvider.Object);
     }
 
     [Fact]
@@ -46,7 +54,7 @@ public class CreateConverationUseCaseShould
         var expected = new Conversation();
         createConversationSetup.ReturnsAsync(expected);
 
-        var actual = await sut.Execute("SomeName", CancellationToken.None);
+        var actual = await sut.Execute(new CreateConversationCommand("SomeName"), CancellationToken.None);
 
         Assert.Same(expected, actual);
 
@@ -58,7 +66,7 @@ public class CreateConverationUseCaseShould
     {
         intentionIsAllowedSetup.Returns(false);
 
-        await Assert.ThrowsAsync<IntentionManagerException>(() => sut.Execute("2", CancellationToken.None));
+        await Assert.ThrowsAsync<IntentionManagerException>(() => sut.Execute(new CreateConversationCommand("SomeName"), CancellationToken.None));
 
         intentionManager.Verify(i => i.IsAllowed(ConversationIntentions.Create));
     }

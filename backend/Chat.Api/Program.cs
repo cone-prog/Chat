@@ -1,11 +1,13 @@
 using Chat.Api.Hubs;
 using Chat.Domain.Authentication;
 using Chat.Domain.Authorization;
+using Chat.Domain.Entities;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
 using Chat.Domain.UseCase.Conversations.Intentions;
 using Chat.Infrastructure;
 using Chat.Infrastructure.Storages;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,7 @@ builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
 builder.Services.AddScoped<IGetConversationByIdUseCase, GetConversationByIdUseCase>();
 builder.Services.AddScoped<IGetConversationByIdStorage, GetConversationByIdStorage>();
 builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
+builder.Services.AddValidatorsFromAssemblyContaining<Conversation>();
 
 builder.Services.AddCors(option =>
         option.AddDefaultPolicy(policy =>

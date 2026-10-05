@@ -35,7 +35,8 @@ public class ConversationController : ControllerBase
         [FromBody] CreateConversation createConversation,
         CancellationToken cancellationToken)
     {
-        var conversation = await useCase.Execute(createConversation.Name,
+        var command = new CreateConversationCommand(createConversation.Name);
+        var conversation = await useCase.Execute(command,
             cancellationToken);
         return CreatedAtRoute(nameof(GetById), new { conversationId = conversation.Id }, new Conversation
         {
