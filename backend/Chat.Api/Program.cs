@@ -1,4 +1,5 @@
 using Chat.Api.Hubs;
+using Chat.Api.Middlewares;
 using Chat.Domain.Authentication;
 using Chat.Domain.Authorization;
 using Chat.Domain.Entities;
@@ -52,4 +53,5 @@ app.UseSwaggerUI();
 app.UseCors();
 app.MapHub<ChatHub>("/chat");
 app.UseHttpsRedirection();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.Run();

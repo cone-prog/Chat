@@ -15,7 +15,7 @@ public class CreateConversationUseCase(
 {
     public async Task<Conversation> Execute(CreateConversationCommand command, CancellationToken cancellationToken)
     {
-        await validator.ValidateAsync(command, cancellationToken);
+        await validator.ValidateAndThrowAsync(command, cancellationToken);
         intentionManager.ThrowIfForbidden(ConversationIntentions.Create);
         return await storage.CreateConversationAsync(provider.Current.UserId, command.Name, cancellationToken);
     }
