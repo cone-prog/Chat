@@ -10,8 +10,24 @@ using Chat.Infrastructure;
 using Chat.Infrastructure.Storages;
 using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
+using Serilog;
+using Serilog.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddLogging(b =>
+    b.AddSerilog(
+        new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .Enrich.WithProperty("Application", "Chat.Api")
+    .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
+    .WriteTo.Logger(lc => lc
+        .Filter.ByExcluding(Matching.FromSource("Microsoft"))
+        .WriteTo.OpenSearch(
+            builder.Configuration.GetConnectionString("Logs"),
+            "chat-logs-{0:yyyy.MM.dd}"))
+    .WriteTo.Logger(lc => lc.WriteTo.Console())
+    .CreateLogger()));
 
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
