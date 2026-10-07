@@ -1,3 +1,4 @@
+using Chat.Domain.Exceptions;
 using FluentValidation;
 
 namespace Chat.Domain.UseCase.Conversations.CreateConversation;
@@ -8,7 +9,7 @@ internal class CreateConversationCommandValidator
     public CreateConversationCommandValidator()
     {
         RuleFor(c => c.Name).Cascade(CascadeMode.Stop)
-            .NotEmpty().WithErrorCode("Empty")
-            .MaximumLength(70).WithErrorCode("TooLong");
+            .NotEmpty().WithErrorCode(ValidationErrorCode.Empty)
+            .MaximumLength(70).WithErrorCode(ValidationErrorCode.TooLong);
     }
 }

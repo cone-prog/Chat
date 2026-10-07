@@ -16,7 +16,7 @@ internal class GetConversationByIdUseCase(
     {
         intentionManager.ThrowIfForbidden(ConversationIntentions.GetById);
         var conversation = await storage.GetByIdAsync(id, cancellationToken);
-        if (conversation is null) throw new ConversationNotFoundExcetption(id);
+        if (conversation is null) throw new ConversationNotFoundException(id);
         return conversation;
     }
 }

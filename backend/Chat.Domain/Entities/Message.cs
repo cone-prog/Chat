@@ -2,11 +2,11 @@ namespace Chat.Domain.Entities;
 
 public class Message
 {
-    public string Text { get; private set; } = null!;
+    public string Text { get; set; } = null!;
 
-    public Guid UserId { get; private set; }
+    public Guid UserId { get; set; }
 
-    public Guid ConversationId { get; private set; }
+    public Guid ConversationId { get; set; }
 
-    public DateTimeOffset UpdatedAt { get; private set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 }

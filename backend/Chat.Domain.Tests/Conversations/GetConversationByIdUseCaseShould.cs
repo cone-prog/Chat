@@ -42,7 +42,7 @@ public class GetConversationByIdUseCaseShould
         getConversationByidSetup.ReturnsAsync((Conversation?)null);
         intentionIsAllowedSetup.Returns(true);
 
-        await Assert.ThrowsAsync<ConversationNotFoundExcetption>(() => sut.Execute(
+        await Assert.ThrowsAsync<ConversationNotFoundException>(() => sut.Execute(
             conversationId, CancellationToken.None)
         );
 

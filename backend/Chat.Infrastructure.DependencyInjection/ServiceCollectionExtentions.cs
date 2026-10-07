@@ -1,5 +1,6 @@
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
+using Chat.Domain.UseCase.Messages.CreateMessage;
 using Chat.Infrastructure.Data;
 using Chat.Infrastructure.Storages;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,8 @@ public static class ServiceCollectionExtentions
     {
 
         services.AddScoped<ICreateConversationStorage, CreateConversationStorage>()
-            .AddScoped<IGetConversationByIdStorage, GetConversationByIdStorage>();
+            .AddScoped<IGetConversationByIdStorage, GetConversationByIdStorage>()
+            .AddScoped<ICreateMessageStorage, CreateMessageStorage>();
 
         services.AddDbContext<ChatDbContext>(option =>
         {
