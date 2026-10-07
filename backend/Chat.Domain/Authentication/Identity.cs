@@ -1,6 +1,6 @@
 namespace Chat.Domain.Authentication;
 
-public class User : IIdentity
+internal class User : IIdentity
 {
     public User(Guid id)
     {

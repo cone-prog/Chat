@@ -1,14 +1,7 @@
 using Chat.Api.Hubs;
 using Chat.Api.Middlewares;
-using Chat.Domain.Authentication;
-using Chat.Domain.Authorization;
-using Chat.Domain.Entities;
-using Chat.Domain.UseCase.Conversations.CreateConversation;
-using Chat.Domain.UseCase.Conversations.GetConversationById;
-using Chat.Domain.UseCase.Conversations.Intentions;
-using Chat.Infrastructure;
-using Chat.Infrastructure.Storages;
-using FluentValidation;
+using Chat.Domain.DependencyInjection;
+using Chat.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 using Serilog.Filters;
@@ -29,25 +22,19 @@ builder.Services.AddLogging(b =>
     .WriteTo.Logger(lc => lc.WriteTo.Console())
     .CreateLogger()));
 
+
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
+builder.Services.AddDomainServices();
+
 builder.Services.AddMemoryCache(options =>
     new MemoryCacheOptions());
-builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddScoped<IIntentionResolver, ConversationIntentionResolver>();
-builder.Services.AddScoped<ICreateConversationStorage, CreateConversationStorage>();
-builder.Services.AddScoped<IIntentionResolver, ConversationIntentionResolver>();
-builder.Services.AddScoped<ICreateConversationUseCase, CreateConversationUseCase>();
-builder.Services.AddScoped<IIntentionManager, IntentionManager>();
-builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
-builder.Services.AddScoped<IGetConversationByIdUseCase, GetConversationByIdUseCase>();
-builder.Services.AddScoped<IGetConversationByIdStorage, GetConversationByIdStorage>();
-builder.Services.AddScoped<IIdentityProvider, IdentityProvider>();
-builder.Services.AddValidatorsFromAssemblyContaining<Conversation>();
+builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("PgConnection")!);
+
 
 builder.Services.AddCors(option =>
         option.AddDefaultPolicy(policy =>

@@ -15,7 +15,9 @@ public class ErrorHandlingMiddleware
         this.next = next;
     }
 
-    public async Task InvokeAsync(HttpContext httpContext,
+    public async Task InvokeAsync(
+        HttpContext httpContext,
+        ILogger<ErrorHandlingMiddleware> logger,
         ProblemDetailsFactory problemDetailsFactory)
     {
         try
@@ -24,20 +26,34 @@ public class ErrorHandlingMiddleware
         }
         catch (Exception exception)
         {
-            var problemDetails = exception switch
+            logger.LogError(
+                exception,
+                "Error has happened with {RequestPath}, the message is {ErrorMessage}",
+                httpContext.Request.Path.Value, exception.Message);
+
+            ProblemDetails problemDetails;
+            switch (exception)
             {
-                IntentionManagerException intentionManagerException
-                    => problemDetailsFactory.CreateFrom(httpContext, intentionManagerException),
+                case IntentionManagerException intentionManagerException:
+                    problemDetails = problemDetailsFactory.CreateFrom(httpContext, intentionManagerException);
+                    break;
 
-                DomainException domainException
-                    => problemDetailsFactory.CreateFrom(httpContext, domainException),
+                case DomainException domainException:
+                    problemDetails = problemDetailsFactory.CreateFrom(httpContext, domainException);
+                    logger.LogError(exception, "Domain exception occured");
+                    break;
 
-                ValidationException validationException
-                    => problemDetailsFactory.CreateFrom(httpContext, validationException),
+                case ValidationException validationException:
+                    problemDetails = problemDetailsFactory.CreateFrom(httpContext, validationException);
+                    break;
 
-                _ => problemDetailsFactory.CreateProblemDetails(httpContext, StatusCodes.Status500InternalServerError,
-                    "Unhandled error! Please contact us.", detail: exception.Message)
-            };
+                default:
+                    problemDetails = problemDetailsFactory.CreateProblemDetails(httpContext, StatusCodes.Status500InternalServerError,
+                    "Unhandled error! Please contact us.", detail: exception.Message);
+                    logger.LogError(exception, "Unhandled exception occured");
+                    break;
+            }
+            ;
 
             httpContext.Response.StatusCode = problemDetails.Status!.Value;
             if (problemDetails is ValidationProblemDetails validationProblemDetails)

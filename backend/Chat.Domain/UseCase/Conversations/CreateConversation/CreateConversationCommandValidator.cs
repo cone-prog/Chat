@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Chat.Domain.UseCase.Conversations.CreateConversation;
 
-public class CreateConversationCommandValidator
+internal class CreateConversationCommandValidator
     : AbstractValidator<CreateConversationCommand>
 {
     public CreateConversationCommandValidator()

@@ -20,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
     <ProjectReference Include="..\Chat.Domain\Chat.Domain.csproj" />
+    <ProjectReference Include="..\Chat.Domain.DependencyInjection\Chat.Domain.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Chat.Infrastructure.DependencyInjection\Chat.Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>

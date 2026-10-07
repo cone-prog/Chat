@@ -9,7 +9,7 @@ public interface IIntentionManager
     bool IsAllowed<TIntention, TObject>(TIntention intention, TObject obj) where TIntention : struct;
 }
 
-public class IntentionManager(IEnumerable<IIntentionResolver> intentionResolvers, IIdentityProvider identityProvider)
+internal class IntentionManager(IEnumerable<IIntentionResolver> intentionResolvers, IIdentityProvider identityProvider)
     : IIntentionManager
 {
     public bool IsAllowed<TIntention>(TIntention intention) where TIntention : struct
@@ -24,7 +24,7 @@ public class IntentionManager(IEnumerable<IIntentionResolver> intentionResolvers
     }
 }
 
-public static class IntentionManagerExtentions
+internal static class IntentionManagerExtentions
 {
     public static void ThrowIfForbidden<TIntention>(this IIntentionManager intentionManager, TIntention intention)
         where TIntention : struct

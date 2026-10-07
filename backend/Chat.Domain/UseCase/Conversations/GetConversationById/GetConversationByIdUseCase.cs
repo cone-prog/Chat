@@ -6,7 +6,7 @@ using Chat.Domain.UseCase.Conversations.Intentions;
 
 namespace Chat.Domain.UseCase.Conversations.GetConversationById;
 
-public class GetConversationByIdUseCase(
+internal class GetConversationByIdUseCase(
     IGetConversationByIdStorage storage,
     IIdentityProvider identityProvider,
     IIntentionManager intentionManager)

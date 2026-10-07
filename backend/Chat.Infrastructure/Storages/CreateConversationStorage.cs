@@ -4,7 +4,7 @@ using Chat.Infrastructure.Models;
 
 namespace Chat.Infrastructure.Storages;
 
-public class CreateConversationStorage(ChatDbContext dbContext) : ICreateConversationStorage
+internal class CreateConversationStorage(ChatDbContext dbContext) : ICreateConversationStorage
 {
     public async Task<Domain.Entities.Conversation> CreateConversationAsync(Guid userId, string name,
         CancellationToken cancellationToken)

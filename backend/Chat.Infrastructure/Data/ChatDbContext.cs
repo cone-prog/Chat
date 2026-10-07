@@ -1,10 +1,9 @@
-using Chat.Domain.Data.DbContext;
 using Chat.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Data;
 
-public class ChatDbContext : DbContext, IChatDbContext
+public class ChatDbContext : DbContext
 {
     public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options) { }
 

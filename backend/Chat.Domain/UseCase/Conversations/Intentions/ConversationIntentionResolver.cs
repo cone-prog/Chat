@@ -3,7 +3,7 @@ using Chat.Domain.Authorization;
 
 namespace Chat.Domain.UseCase.Conversations.Intentions;
 
-public class ConversationIntentionResolver : IIntentionResolver<ConversationIntentions>
+internal class ConversationIntentionResolver : IIntentionResolver<ConversationIntentions>
 {
     public bool IsAllowed(IIdentity subject, ConversationIntentions intention)
     {

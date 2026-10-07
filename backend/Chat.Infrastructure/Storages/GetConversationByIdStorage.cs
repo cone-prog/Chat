@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Storages;
 
-public class GetConversationByIdStorage(ChatDbContext dbContext)
+internal class GetConversationByIdStorage(ChatDbContext dbContext)
     : IGetConversationByIdStorage
 {
     public async Task<Conversation?> GetByIdAsync(Guid id, CancellationToken cancellationToken)

@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace Chat.Domain.UseCase.Conversations.CreateConversation;
 
-public class CreateConversationUseCase(
+internal class CreateConversationUseCase(
     IValidator<CreateConversationCommand> validator,
     IIntentionManager intentionManager,
     ICreateConversationStorage storage,
