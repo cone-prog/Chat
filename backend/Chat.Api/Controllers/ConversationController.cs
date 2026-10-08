@@ -1,3 +1,4 @@
+using AutoMapper;
 using Chat.Api.Models;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
@@ -7,7 +8,7 @@ namespace Chat.Api.Controllers;
 
 [ApiController]
 [Route("conversations")]
-public class ConversationController : ControllerBase
+public class ConversationController(IMapper mapper) : ControllerBase
 {
     [HttpGet("{conversationId}", Name = "GetById")]
     [ProducesResponseType(200)]
@@ -19,12 +20,7 @@ public class ConversationController : ControllerBase
         CancellationToken cancellationToken)
     {
         var conversation = await useCase.Execute(conversationId, cancellationToken);
-        return Ok(new Conversation
-        {
-            Id = conversation.Id,
-            Name = conversation.Name,
-            CreatedAt = conversation.CreatedAt
-        });
+        return Ok(mapper.Map<Conversation>(conversation));
     }
 
     [HttpPost]
@@ -38,11 +34,7 @@ public class ConversationController : ControllerBase
         var command = new CreateConversationCommand(createConversation.Name);
         var conversation = await useCase.Execute(command,
             cancellationToken);
-        return CreatedAtRoute(nameof(GetById), new { conversationId = conversation.Id }, new Conversation
-        {
-            Id = conversation.Id,
-            Name = conversation.Name,
-            CreatedAt = conversation.CreatedAt
-        });
+        return CreatedAtRoute(nameof(GetById), new { conversationId = conversation.Id },
+            mapper.Map<Conversation>(conversation));
     }
 }

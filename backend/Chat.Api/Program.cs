@@ -1,3 +1,4 @@
+using System.Reflection;
 using Chat.Api.Hubs;
 using Chat.Api.Middlewares;
 using Chat.Domain.DependencyInjection;
@@ -28,11 +29,14 @@ builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(config => config
+    .AddMaps(Assembly.GetAssembly(typeof(Program))));
 
 builder.Services.AddDomainServices();
 
 builder.Services.AddMemoryCache(options =>
     new MemoryCacheOptions());
+
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("PgConnection")!);
 
 

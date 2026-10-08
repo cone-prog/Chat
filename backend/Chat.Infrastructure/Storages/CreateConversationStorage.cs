@@ -1,10 +1,14 @@
+using AutoMapper;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Infrastructure.Data;
 using Chat.Infrastructure.Models;
 
 namespace Chat.Infrastructure.Storages;
 
-internal class CreateConversationStorage(ChatDbContext dbContext) : ICreateConversationStorage
+internal class CreateConversationStorage(
+    ChatDbContext dbContext,
+    IMapper mapper
+    ) : ICreateConversationStorage
 {
     public async Task<Domain.Entities.Conversation> CreateConversationAsync(Guid userId, string name,
         CancellationToken cancellationToken)
@@ -31,11 +35,6 @@ internal class CreateConversationStorage(ChatDbContext dbContext) : ICreateConve
         await dbContext.AddAsync(newConversation, cancellationToken);
         await dbContext.AddAsync(newParticipant, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
-        return new Domain.Entities.Conversation
-        {
-            Id = newConversation.Id,
-            Name = newConversation.Name,
-            CreatedAt = newConversation.CreatedAt
-        };
+        return mapper.Map<Domain.Entities.Conversation>(newConversation);
     }
 }

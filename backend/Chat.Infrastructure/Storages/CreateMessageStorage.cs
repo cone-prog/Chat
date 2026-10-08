@@ -1,3 +1,4 @@
+using AutoMapper;
 using Chat.Domain.UseCase.Messages.CreateMessage;
 using Chat.Infrastructure.Data;
 using Chat.Infrastructure.Models;
@@ -5,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Storages;
 
-public class CreateMessageStorage(ChatDbContext dbContext)
+public class CreateMessageStorage(ChatDbContext dbContext, IMapper mapper)
     : ICreateMessageStorage
 {
     public async Task<bool> ConversationExistsAsync(Guid conversationId, CancellationToken cancellationToken)
@@ -30,12 +31,6 @@ public class CreateMessageStorage(ChatDbContext dbContext)
         await dbContext.Messages.AddAsync(message, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new Domain.Entities.Message()
-        {
-            UserId = message.UserId,
-            UpdatedAt = message.UpdatedAt,
-            ConversationId = message.ConversationId,
-            Text = text,
-        };
+        return mapper.Map<Domain.Entities.Message>(message);
     }
 }
