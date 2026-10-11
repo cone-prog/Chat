@@ -9,6 +9,8 @@ internal class ConversationIntentionResolver : IIntentionResolver<ConversationIn
     {
         switch (intention)
         {
+            case ConversationIntentions.Get:
+                return true;
             case ConversationIntentions.GetById:
                 return true;
             case ConversationIntentions.Create:

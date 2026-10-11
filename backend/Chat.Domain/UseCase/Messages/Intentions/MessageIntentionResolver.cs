@@ -12,6 +12,8 @@ internal class MessageIntentionResolver
         {
             case MessageIntentions.Create:
                 return true;
+            case MessageIntentions.Get:
+                return true;
             default:
                 return false;
         }

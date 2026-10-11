@@ -2,6 +2,7 @@ using AutoMapper;
 using Chat.Api.Models;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
+using Chat.Domain.UseCase.Conversations.GetConversations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.Api.Controllers;
@@ -36,5 +37,14 @@ public class ConversationController(IMapper mapper) : ControllerBase
             cancellationToken);
         return CreatedAtRoute(nameof(GetById), new { conversationId = conversation.Id },
             mapper.Map<Conversation>(conversation));
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Conversation>>> GetConversation(
+        [FromServices] IGetConversationsUseCase useCase,
+        CancellationToken cancellationToken)
+    {
+        var conversations = await useCase.Execute(cancellationToken);
+        return Ok(conversations.Select(c => mapper.Map<Conversation>(c)));
     }
 }

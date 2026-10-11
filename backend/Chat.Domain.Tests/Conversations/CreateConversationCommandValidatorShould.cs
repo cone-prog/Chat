@@ -24,7 +24,7 @@ public class CreateConversationCommandValidatorShould
     [InlineData("        "),]
     [InlineData("")]
     [InlineData("dcysxbrgfndyeeabpikrwnsjcjznkdlhcacocykknctpeksneajsmiletlwkbaahqqrxrkszfsnuioex")]
-    public void ReturnFailur_WhenCommandInvalid(string name)
+    public void ReturnFailure_WhenCommandInvalid(string name)
     {
         var command = new CreateConversationCommand(name);
         var actual = sut.TestValidate(command);

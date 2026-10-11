@@ -3,6 +3,7 @@
   <Project Path="Chat.Domain.DependencyInjection/Chat.Domain.DependencyInjection.csproj" />
   <Project Path="Chat.Domain.Tests/Chat.Domain.Tests.csproj" />
   <Project Path="Chat.Domain/Chat.Domain.csproj" />
+  <Project Path="Chat.E2E/Chat.E2E.csproj" />
   <Project Path="Chat.Infrastructure.DependencyInjection/Chat.Infrastructure.DependencyInjection.csproj" />
   <Project Path="Chat.Infrastructure/Chat.Infrastructure.csproj" />
 </Solution>

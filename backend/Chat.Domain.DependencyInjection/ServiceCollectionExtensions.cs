@@ -3,6 +3,7 @@ using Chat.Domain.Authorization;
 using Chat.Domain.Entities;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
+using Chat.Domain.UseCase.Conversations.GetConversations;
 using Chat.Domain.UseCase.Conversations.Intentions;
 using Chat.Domain.UseCase.Messages.CreateMessage;
 using Chat.Domain.UseCase.Messages.Intentions;
@@ -17,7 +18,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<ICreateConversationUseCase, CreateConversationUseCase>()
             .AddScoped<IGetConversationByIdUseCase, GetConversationByIdUseCase>()
-            .AddScoped<ICreateMessageUseCase, CreateMessageUseCase>();
+            .AddScoped<ICreateMessageUseCase, CreateMessageUseCase>()
+            .AddScoped<IGetConversationsUseCase, GetConversationsUseCase>();
 
         services.AddScoped<IIntentionResolver, ConversationIntentionResolver>()
             .AddScoped<IIntentionResolver, MessageIntentionResolver>()
