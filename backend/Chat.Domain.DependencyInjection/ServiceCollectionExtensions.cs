@@ -21,6 +21,11 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICreateMessageUseCase, CreateMessageUseCase>()
             .AddScoped<IGetConversationsUseCase, GetConversationsUseCase>();
 
+        services.AddScoped<IAuthenticationService, AuthenticationService>()
+            .AddScoped<IPasswordManager, PasswordManager>()
+            .AddScoped<ISymmetricDecryptor, AesSymmetricEncryptorDecryptor>()
+            .AddScoped<ISymmetricEncryptor, AesSymmetricEncryptorDecryptor>();
+
         services.AddScoped<IIntentionResolver, ConversationIntentionResolver>()
             .AddScoped<IIntentionResolver, MessageIntentionResolver>()
             .AddScoped<IIntentionManager, IntentionManager>();
