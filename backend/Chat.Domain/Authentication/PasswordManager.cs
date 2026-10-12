@@ -6,7 +6,7 @@ public class PasswordManager : IPasswordManager
 {
     private const int SaltLength = 16;
 
-    public (byte[] Salt, byte[] hash) GeneratePasswordParts(string password)
+    public (byte[] salt, byte[] hash) GeneratePasswordParts(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltLength);
         var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, 600000, HashAlgorithmName.SHA256, 32);

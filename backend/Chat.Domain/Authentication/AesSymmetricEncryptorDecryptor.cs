@@ -35,7 +35,7 @@ internal class AesSymmetricEncryptorDecryptor : ISymmetricEncryptor, ISymmetricD
         var decryptor = aes.Value.CreateDecryptor(key, iv);
         await using (var stream = new CryptoStream(decryptedStream, decryptor, CryptoStreamMode.Write))
         {
-            await stream.WriteAsync(encryptedBytes.AsMemory(), cancellationToken);
+            await stream.WriteAsync(encryptedBytes.AsMemory(IvSize), cancellationToken);
         }
 
         return Encoding.UTF8.GetString(decryptedStream.ToArray());

@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Chat.Infrastructure.DependencyInjection\Chat.Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>

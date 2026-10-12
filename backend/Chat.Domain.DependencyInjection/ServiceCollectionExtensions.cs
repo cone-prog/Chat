@@ -7,6 +7,7 @@ using Chat.Domain.UseCase.Conversations.GetConversations;
 using Chat.Domain.UseCase.Conversations.Intentions;
 using Chat.Domain.UseCase.Messages.CreateMessage;
 using Chat.Domain.UseCase.Messages.Intentions;
+using Chat.Domain.UseCase.Users.SignOn;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +20,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICreateConversationUseCase, CreateConversationUseCase>()
             .AddScoped<IGetConversationByIdUseCase, GetConversationByIdUseCase>()
             .AddScoped<ICreateMessageUseCase, CreateMessageUseCase>()
-            .AddScoped<IGetConversationsUseCase, GetConversationsUseCase>();
+            .AddScoped<IGetConversationsUseCase, GetConversationsUseCase>()
+            .AddScoped<ISignOnUseCase, SignOnUseCase>();
 
         services.AddScoped<IAuthenticationService, AuthenticationService>()
             .AddScoped<IPasswordManager, PasswordManager>()

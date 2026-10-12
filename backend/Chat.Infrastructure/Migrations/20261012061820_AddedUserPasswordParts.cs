@@ -10,14 +10,13 @@ namespace Chat.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<byte[]>(
+            migrationBuilder.AddColumn<byte[]>(
                 name: "PasswordHash",
                 table: "Users",
                 type: "bytea",
                 maxLength: 32,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text");
+                nullable: false
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
