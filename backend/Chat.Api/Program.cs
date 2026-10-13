@@ -1,6 +1,8 @@
 using System.Reflection;
+using Chat.Api.Authentication;
 using Chat.Api.Hubs;
 using Chat.Api.Middlewares;
+using Chat.Domain.Authentication;
 using Chat.Domain.DependencyInjection;
 using Chat.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,8 +25,9 @@ builder.Services.AddLogging(b =>
     .WriteTo.Logger(lc => lc.WriteTo.Console())
     .CreateLogger()));
 
-
+builder.Services.Configure<AuthenticationConfiguration>(builder.Configuration.GetSection("Authentication").Bind);
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<IAuthTokenStorage, AuthTokenStorage>();
 builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();

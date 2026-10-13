@@ -1,6 +1,6 @@
 namespace Chat.Domain.Authentication;
 
-internal interface IPasswordManager
+public interface IPasswordManager
 {
     (byte[] salt, byte[] hash) GeneratePasswordParts(string password);
 

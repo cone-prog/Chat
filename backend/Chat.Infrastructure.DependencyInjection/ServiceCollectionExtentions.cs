@@ -3,6 +3,7 @@ using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
 using Chat.Domain.UseCase.Conversations.GetConversations;
 using Chat.Domain.UseCase.Messages.CreateMessage;
+using Chat.Domain.UseCase.Users.SignIn;
 using Chat.Domain.UseCase.Users.SignOn;
 using Chat.Infrastructure.Data;
 using Chat.Infrastructure.Storages;
@@ -21,7 +22,8 @@ public static class ServiceCollectionExtentions
             .AddScoped<IGetConversationByIdStorage, GetConversationByIdStorage>()
             .AddScoped<ICreateMessageStorage, CreateMessageStorage>()
             .AddScoped<IGetConversationsStorage, GetConversationsStorage>()
-            .AddScoped<ISignOnStorage, SignOnStorage>();
+            .AddScoped<ISignOnStorage, SignOnStorage>()
+            .AddScoped<ISignInStorage, SignInStorage>();
 
         services.AddAutoMapper(config => config.AddMaps(Assembly.GetAssembly(typeof(ChatDbContext))));
 
