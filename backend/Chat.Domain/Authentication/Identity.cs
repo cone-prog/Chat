@@ -1,11 +1,16 @@
 namespace Chat.Domain.Authentication;
 
-internal class User : IIdentity
+public class User : IIdentity
 {
-    public User(Guid id)
+    public User(Guid id, Guid sessionId)
     {
         UserId = id;
+        SessionId = sessionId;
     }
 
     public Guid UserId { get; }
+    public Guid SessionId { get; }
+    
+    public static User Guest => new(Guid.Empty, Guid.Empty);
+
 }

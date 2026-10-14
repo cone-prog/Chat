@@ -11,6 +11,7 @@ public class ChatDbContext : DbContext
     internal DbSet<Conversation> Conversations => Set<Conversation>();
     internal DbSet<Message> Messages => Set<Message>();
     internal DbSet<User> Users => Set<User>();
+    internal DbSet<Session> Sessions => Set<Session>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -23,7 +23,7 @@ public class SignOnUseCaseShould
             .ReturnsAsync(new ValidationResult());
         
         storage = new Mock<ISignOnStorage>();
-        CreateUserSetup = storage.Setup(s => s.Create(It.IsAny<string>(),It.IsAny<string>(), 
+        CreateUserSetup = storage.Setup(s => s.CreateUser(It.IsAny<string>(),It.IsAny<string>(), 
             It.IsAny<byte[]>(), It.IsAny<byte[]>(), It.IsAny<CancellationToken>()));
 
         var passwordManager = new Mock<IPasswordManager>();
@@ -42,7 +42,7 @@ public class SignOnUseCaseShould
         
         await sut.Execute(command, CancellationToken.None);
 
-        storage.Verify(s => s.Create(command.Name,command.Email, passwordHash, salt, It.IsAny<CancellationToken>()),
+        storage.Verify(s => s.CreateUser(command.Name,command.Email, passwordHash, salt, It.IsAny<CancellationToken>()),
             Times.Once);
     }
     

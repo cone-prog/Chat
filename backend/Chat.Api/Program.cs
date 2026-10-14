@@ -57,11 +57,12 @@ builder.Services.AddCors(option =>
 var app = builder.Build();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
 app.MapOpenApi();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors();
-app.MapHub<ChatHub>("/chat");
 app.UseHttpsRedirection();
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<AuthenticationMiddleware>();
 app.Run();

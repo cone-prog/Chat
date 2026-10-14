@@ -11,9 +11,10 @@ internal class SignOnUseCase (
 {
     public async Task<IIdentity> Execute(SignOnCommand command, CancellationToken cancellationToken)
     {
-        await validator.ValidateAndThrowAsync(command);
+        await validator.ValidateAndThrowAsync(command, cancellationToken);
         var (salt, passwordHash) = passwordManager.GeneratePasswordParts(command.Password);
-        var userId = await storage.Create(command.Name,command.Email, passwordHash, salt, cancellationToken);
-        return new User(userId);
+        var userId = await storage.CreateUser(command.Name,command.Email, passwordHash, salt, cancellationToken);
+        var sessionId = await storage.CreateSession(userId, DateTimeOffset.UtcNow + TimeSpan.FromHours(1), cancellationToken);
+        return new User(userId, sessionId);
     }
 }
