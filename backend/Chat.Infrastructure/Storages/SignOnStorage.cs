@@ -24,18 +24,4 @@ public class SignOnStorage(ChatDbContext dbContext) : ISignOnStorage
         
         return userId;
     }
-    
-    public async Task<Guid> CreateSession(Guid userId, DateTimeOffset expiresAt, CancellationToken cancellationToken)
-    {
-        var newSession = new Session()
-        {
-            Id = Guid.NewGuid(),
-            ExpiresAt = expiresAt,
-            UserId = userId
-        };
-        
-        await dbContext.Sessions.AddAsync(newSession,cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        return newSession.Id;
-    }
 }

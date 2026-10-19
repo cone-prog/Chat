@@ -1,6 +1,15 @@
-﻿namespace Chat.Domain.Behaviors;
+﻿using FluentValidation;
+using MediatR;
 
-public class ValidationBehavior
+namespace Chat.Domain.Behaviors;
+
+public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest> validator) : IPipelineBehavior<TRequest, TResponse> 
+    where TRequest : IRequest<TResponse>
+        
 {
-    
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        return await next.Invoke(cancellationToken);
+    }
 }

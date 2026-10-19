@@ -14,7 +14,7 @@ namespace Chat.Domain.Tests.Messages;
 
 public class CreateMessageUseCaseShould
 {
-    private readonly ICreateMessageUseCase sut;
+    private readonly CreateMessageUseCase sut;
     private readonly ISetup<IIntentionManager, bool> intentionIsAllowedSetup;
     private readonly ISetup<IIdentity, Guid> getCurrentUserIdSetup;
     private readonly Mock<ICreateMessageStorage> storage;
@@ -48,7 +48,7 @@ public class CreateMessageUseCaseShould
         var intentionManager = new Mock<IIntentionManager>();
         intentionIsAllowedSetup = intentionManager.Setup(i => i.IsAllowed(It.IsAny<MessageIntentions>()));
 
-        sut = new CreateMessageUseCase(storage.Object, validator.Object,
+        sut = new CreateMessageUseCase(storage.Object,
             identityProvider.Object, intentionManager.Object);
     }
 
@@ -70,7 +70,7 @@ public class CreateMessageUseCaseShould
         intentionIsAllowedSetup.Returns(true);
         createMessageSetup.ReturnsAsync(expected);
 
-        var actual = await sut.Execute(command, CancellationToken.None);
+        var actual = await sut.Handle(command, CancellationToken.None);
 
         Assert.Same(expected, actual);
 
@@ -83,7 +83,7 @@ public class CreateMessageUseCaseShould
         conversationExistsSetup.ReturnsAsync(false);
         var command = new CreateMessageCommand(Guid.Parse("550e8400-e29b-41d4-a716-446655440001"), "Something");
 
-        await Assert.ThrowsAsync<ConversationNotFoundException>(() => sut.Execute(command, CancellationToken.None));
+        await Assert.ThrowsAsync<ConversationNotFoundException>(() => sut.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -93,6 +93,6 @@ public class CreateMessageUseCaseShould
         conversationExistsSetup.ReturnsAsync(true);
         intentionIsAllowedSetup.Returns(false);
 
-        await Assert.ThrowsAsync<IntentionManagerException>(() => sut.Execute(command, CancellationToken.None));
+        await Assert.ThrowsAsync<IntentionManagerException>(() => sut.Handle(command, CancellationToken.None));
     }
 }

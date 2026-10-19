@@ -1,10 +1,13 @@
 using System.Reflection;
+using Chat.Domain.Authentication;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
 using Chat.Domain.UseCase.Conversations.GetConversations;
 using Chat.Domain.UseCase.Messages.CreateMessage;
+using Chat.Domain.UseCase.Messages.GetMessages;
 using Chat.Domain.UseCase.Users.SignIn;
 using Chat.Domain.UseCase.Users.SignOn;
+using Chat.Domain.UseCase.Users.SignOut;
 using Chat.Infrastructure.Data;
 using Chat.Infrastructure.Storages;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +26,10 @@ public static class ServiceCollectionExtentions
             .AddScoped<ICreateMessageStorage, CreateMessageStorage>()
             .AddScoped<IGetConversationsStorage, GetConversationsStorage>()
             .AddScoped<ISignOnStorage, SignOnStorage>()
-            .AddScoped<ISignInStorage, SignInStorage>();
+            .AddScoped<ISignInStorage, SignInStorage>()
+            .AddScoped<ISignOutStorage, SignOutStorage>()
+            .AddScoped<IAuthenticationStorage, AuthenticationStorage>()
+            .AddScoped<IGetMessagesStorage, GetMessagesStorage>();
 
         services.AddAutoMapper(config => config.AddMaps(Assembly.GetAssembly(typeof(ChatDbContext))));
 

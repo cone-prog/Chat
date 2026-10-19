@@ -11,5 +11,6 @@ public class InfrastructureProfile : Profile
         CreateMap<Conversation, Domain.Entities.Conversation>();
         CreateMap<Message, Domain.Entities.Message>();
         CreateMap<User, RecognisedUser>();
+        CreateMap<Session, Domain.Authentication.Session>();
     }
 }

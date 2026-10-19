@@ -4,19 +4,18 @@ using Chat.Domain.Entities;
 using Chat.Domain.Exceptions;
 using Chat.Domain.UseCase.Messages.Intentions;
 using FluentValidation;
+using MediatR;
 
 namespace Chat.Domain.UseCase.Messages.CreateMessage;
 
 internal class CreateMessageUseCase(
     ICreateMessageStorage storage,
-    IValidator<CreateMessageCommand> validator,
     IIdentityProvider identityProvider,
     IIntentionManager intentionManager)
-    : ICreateMessageUseCase
+    : IRequestHandler<CreateMessageCommand, Message>
 {
-    public async Task<Message> Execute(CreateMessageCommand command, CancellationToken cancellationToken)
+    public async Task<Message> Handle(CreateMessageCommand command, CancellationToken cancellationToken)
     {
-        await validator.ValidateAndThrowAsync(command, cancellationToken);
         if (!await storage.ConversationExistsAsync(command.ConversationId, cancellationToken))
             throw new ConversationNotFoundException(command.ConversationId);
 

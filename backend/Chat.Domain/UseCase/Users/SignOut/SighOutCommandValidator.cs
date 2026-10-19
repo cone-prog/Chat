@@ -1,6 +1,8 @@
-﻿namespace Chat.Domain.UseCase.Users.SignOut;
+﻿using FluentValidation;
 
-public class SighOutCommandValidator
+namespace Chat.Domain.UseCase.Users.SignOut;
+
+public class SighOutCommandValidator : AbstractValidator<SignOutCommand>
 {
     
 }

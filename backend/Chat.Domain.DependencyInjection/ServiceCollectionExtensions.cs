@@ -1,14 +1,11 @@
+using System.Reflection;
 using Chat.Domain.Authentication;
 using Chat.Domain.Authorization;
+using Chat.Domain.Behaviors;
 using Chat.Domain.Entities;
-using Chat.Domain.UseCase.Conversations.CreateConversation;
-using Chat.Domain.UseCase.Conversations.GetConversationById;
-using Chat.Domain.UseCase.Conversations.GetConversations;
+using Chat.Domain.Monitoring;
 using Chat.Domain.UseCase.Conversations.Intentions;
-using Chat.Domain.UseCase.Messages.CreateMessage;
 using Chat.Domain.UseCase.Messages.Intentions;
-using Chat.Domain.UseCase.Users.SignIn;
-using Chat.Domain.UseCase.Users.SignOn;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,12 +15,13 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomainServices(this IServiceCollection services)
     {
-        services.AddScoped<ICreateConversationUseCase, CreateConversationUseCase>()
-            .AddScoped<IGetConversationByIdUseCase, GetConversationByIdUseCase>()
-            .AddScoped<ICreateMessageUseCase, CreateMessageUseCase>()
-            .AddScoped<IGetConversationsUseCase, GetConversationsUseCase>()
-            .AddScoped<ISignOnUseCase, SignOnUseCase>()
-            .AddScoped<ISignInUseCase, SignInUseCase>();
+        services.AddMediatR(cnf =>
+            cnf.AddOpenBehavior(typeof(ValidationBehavior<,>))
+                .AddOpenBehavior(typeof(MonitoringBehavior<,>))
+                .RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(Conversation))!));
+        
+        services
+            .AddScoped<IAuthenticationService, AuthenticationService>();
 
         services.AddScoped<IAuthenticationService, AuthenticationService>()
             .AddScoped<IPasswordManager, PasswordManager>()
@@ -36,6 +34,8 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IIdentityProvider, IdentityProvider>();
 
+        services.AddSingleton<DomainMetrics>();
+        
         services.AddValidatorsFromAssemblyContaining<Conversation>(includeInternalTypes: true);
 
         return services;

@@ -1,6 +1,8 @@
-﻿namespace Chat.Domain.UseCase.Conversations.GetConversations;
+﻿using FluentValidation;
 
-public class GetConversationQueryValidator
+namespace Chat.Domain.UseCase.Conversations.GetConversations;
+
+public class GetConversationQueryValidator : AbstractValidator<GetConversationsQuery>
 {
-    
+
 }

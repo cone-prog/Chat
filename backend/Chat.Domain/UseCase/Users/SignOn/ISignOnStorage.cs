@@ -4,5 +4,4 @@ public interface ISignOnStorage
 {
     Task<Guid> CreateUser(string name,string email, byte[] passwordHash, byte[] salt, CancellationToken cancellationToken);
     
-    Task<Guid> CreateSession(Guid userId, DateTimeOffset expiresAt, CancellationToken cancellationToken);
 }

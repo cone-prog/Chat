@@ -29,7 +29,7 @@ public class SignOnUseCaseShould
         var passwordManager = new Mock<IPasswordManager>();
         generatePasswordParts = passwordManager.Setup(p => p.GeneratePasswordParts(It.IsAny<string>()));
         
-        sut = new SignOnUseCase(validator.Object, storage.Object, passwordManager.Object);
+        sut = new SignOnUseCase(storage.Object, passwordManager.Object);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class SignOnUseCaseShould
         var command = new SignOnCommand("somebody","sadfa", "asdf");
         generatePasswordParts.Returns((salt, passwordHash));
         
-        await sut.Execute(command, CancellationToken.None);
+        await sut.Handle(command, CancellationToken.None);
 
         storage.Verify(s => s.CreateUser(command.Name,command.Email, passwordHash, salt, It.IsAny<CancellationToken>()),
             Times.Once);
@@ -58,7 +58,7 @@ public class SignOnUseCaseShould
         
         
         var command = new SignOnCommand("somebody","sadfa", "asdf");
-        var result = await sut.Execute(command, CancellationToken.None);
+        var result = await sut.Handle(command, CancellationToken.None);
 
         Assert.Equal(userId, result.UserId);
     }

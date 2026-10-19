@@ -3,13 +3,14 @@ using Chat.Api.Models;
 using Chat.Domain.UseCase.Conversations.CreateConversation;
 using Chat.Domain.UseCase.Conversations.GetConversationById;
 using Chat.Domain.UseCase.Conversations.GetConversations;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.Api.Controllers;
 
 [ApiController]
 [Route("conversations")]
-public class ConversationController(IMapper mapper) : ControllerBase
+public class ConversationController(IMapper mapper, IMediator   mediator) : ControllerBase
 {
     [HttpGet("{conversationId}", Name = "GetById")]
     [ProducesResponseType(200)]
@@ -17,10 +18,9 @@ public class ConversationController(IMapper mapper) : ControllerBase
     [ProducesResponseType(410)]
     public async Task<ActionResult<Conversation>> GetById(
         Guid conversationId,
-        [FromServices] IGetConversationByIdUseCase useCase,
         CancellationToken cancellationToken)
     {
-        var conversation = await useCase.Execute(conversationId, cancellationToken);
+        var conversation = await mediator.Send(new GetConversationByIdQuery(conversationId), cancellationToken);
         return Ok(mapper.Map<Conversation>(conversation));
     }
 
@@ -28,12 +28,11 @@ public class ConversationController(IMapper mapper) : ControllerBase
     [ProducesResponseType(201)]
     [ProducesResponseType(403)]
     public async Task<ActionResult> CreateConversation(
-        [FromServices] ICreateConversationUseCase useCase,
         [FromBody] CreateConversation createConversation,
         CancellationToken cancellationToken)
     {
         var command = new CreateConversationCommand(createConversation.Name);
-        var conversation = await useCase.Execute(command,
+        var conversation = await mediator.Send(command,
             cancellationToken);
         return CreatedAtRoute(nameof(GetById), new { conversationId = conversation.Id },
             mapper.Map<Conversation>(conversation));
@@ -41,10 +40,9 @@ public class ConversationController(IMapper mapper) : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<List<Conversation>>> GetConversation(
-        [FromServices] IGetConversationsUseCase useCase,
         CancellationToken cancellationToken)
     {
-        var conversations = await useCase.Execute(cancellationToken);
+        var conversations = await mediator.Send(new GetConversationsQuery(),cancellationToken);
         return Ok(conversations.Select(c => mapper.Map<Conversation>(c)));
     }
 }

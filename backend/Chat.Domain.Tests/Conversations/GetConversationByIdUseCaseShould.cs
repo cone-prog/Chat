@@ -14,7 +14,7 @@ public class GetConversationByIdUseCaseShould
     private readonly ISetup<IGetConversationByIdStorage, Task<Conversation?>> getConversationByidSetup;
     private readonly ISetup<IIdentity, Guid> getCurrentUserIdSetup;
     private readonly ISetup<IIntentionManager, bool> intentionIsAllowedSetup;
-    private readonly IGetConversationByIdUseCase sut;
+    private readonly GetConversationByIdUseCase sut;
     private readonly Mock<IGetConversationByIdStorage> storage;
     private readonly Mock<IIntentionManager> intentionManager;
 
@@ -42,8 +42,8 @@ public class GetConversationByIdUseCaseShould
         getConversationByidSetup.ReturnsAsync((Conversation?)null);
         intentionIsAllowedSetup.Returns(true);
 
-        await Assert.ThrowsAsync<ConversationNotFoundException>(() => sut.Execute(
-            conversationId, CancellationToken.None)
+        await Assert.ThrowsAsync<ConversationNotFoundException>(() => sut.Handle(
+            new GetConversationByIdQuery(conversationId), CancellationToken.None)
         );
 
         storage.Verify(s => s.GetByIdAsync(conversationId, It.IsAny<CancellationToken>()));
@@ -55,8 +55,8 @@ public class GetConversationByIdUseCaseShould
         var conversationId = Guid.Parse("550e8400-e29b-41d4-a716-446655440000");
         intentionIsAllowedSetup.Returns(false);
 
-        await Assert.ThrowsAsync<IntentionManagerException>(() => sut.Execute(
-            conversationId, CancellationToken.None)
+        await Assert.ThrowsAsync<IntentionManagerException>(() => sut.Handle(
+            new GetConversationByIdQuery(conversationId), CancellationToken.None)
         );
 
         storage.Verify(s => s.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
@@ -76,7 +76,7 @@ public class GetConversationByIdUseCaseShould
         intentionIsAllowedSetup.Returns(true);
         getConversationByidSetup.ReturnsAsync(expected);
 
-        var actual = await sut.Execute(expected.Id, CancellationToken.None);
+        var actual = await sut.Handle(new GetConversationByIdQuery(expected.Id), CancellationToken.None);
 
         Assert.Same(expected, actual);
         storage.Verify(s => s.GetByIdAsync(expected.Id, It.IsAny<CancellationToken>()));

@@ -36,7 +36,7 @@ public class SignInUseCaseShould
         var passwordManager = new Mock<IPasswordManager>();
         comparePasswordSetup = passwordManager.Setup(p => p.ComparePassword(It.IsAny<string>(),It.IsAny<byte[]>(),It.IsAny<byte[]>()));
         
-        sut = new SignInUseCase(validator.Object, encryptor.Object, storage.Object, passwordManager.Object);
+        sut = new SignInUseCase(encryptor.Object, storage.Object, passwordManager.Object);
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class SignInUseCaseShould
         CreateSessionSetup.ReturnsAsync(sessionId);
         comparePasswordSetup.Returns(true);
 
-        var (actualUser, actualToken) = await sut.Execute(new SignInCommand("somebody", "gg"), CancellationToken.None);
+        var (actualUser, actualToken) = await sut.Handle(new SignInCommand("somebody", "gg"), CancellationToken.None);
         Assert.NotNull(actualUser);
         Assert.Equal(expected.UserId,actualUser.UserId);
         Assert.Equal(expected.SessionId, actualUser.SessionId);
@@ -67,7 +67,7 @@ public class SignInUseCaseShould
     {
         findUserSetup.ReturnsAsync((RecognisedUser?)null);
         
-        await Assert.ThrowsAsync<UserNotFoundEcxeption>(() => sut.Execute(new SignInCommand("somebody", "gg"),
+        await Assert.ThrowsAsync<UserNotFoundEcxeption>(() => sut.Handle(new SignInCommand("somebody", "gg"),
             CancellationToken.None));
     }
     
@@ -78,7 +78,7 @@ public class SignInUseCaseShould
         findUserSetup.ReturnsAsync(new RecognisedUser { Salt = [], PasswordHash = [] });
         comparePasswordSetup.Returns(false);
 
-        await Assert.ThrowsAsync<UserNotFoundEcxeption>(() => sut.Execute(new SignInCommand("somebody", "gg"), 
+        await Assert.ThrowsAsync<UserNotFoundEcxeption>(() => sut.Handle(new SignInCommand("somebody", "gg"), 
             CancellationToken.None));
     }
 }

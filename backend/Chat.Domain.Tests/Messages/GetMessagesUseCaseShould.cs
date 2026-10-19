@@ -41,7 +41,7 @@ public class GetMessagesUseCaseShould
         getCurrentUserIdSetup = identity.Setup(i => i.UserId);
 
 
-        sut = new GetMessagesUseCase(validator.Object, storage.Object,
+        sut = new GetMessagesUseCase(storage.Object,
            identityProvider.Object, intentionManager.Object);
     }
 
@@ -71,7 +71,7 @@ public class GetMessagesUseCaseShould
         getMessagesSetup.ReturnsAsync(expected);
         getCurrentUserIdSetup.Returns(userId);
 
-        var actual = await sut.Execute(query, CancellationToken.None);
+        var actual = await sut.Handle(query, CancellationToken.None);
 
         Assert.Same(expected, actual);
         storage.Verify(s => s.GetMessagesAsync(query.ConversationId, query.BeforeMessageId, userId,
@@ -93,7 +93,7 @@ public class GetMessagesUseCaseShould
 
         intentionIsAllowedSetup.Returns(false);
 
-        await Assert.ThrowsAsync<IntentionManagerException>(async () => await sut.Execute(query,
+        await Assert.ThrowsAsync<IntentionManagerException>(async () => await sut.Handle(query,
             CancellationToken.None));
         intentionManager.Verify(m => m.IsAllowed(MessageIntentions.Get));
     }

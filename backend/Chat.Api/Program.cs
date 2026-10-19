@@ -2,6 +2,7 @@ using System.Reflection;
 using Chat.Api.Authentication;
 using Chat.Api.Hubs;
 using Chat.Api.Middlewares;
+using Chat.Api.Monitoring;
 using Chat.Domain.Authentication;
 using Chat.Domain.DependencyInjection;
 using Chat.Infrastructure.DependencyInjection;
@@ -29,7 +30,9 @@ builder.Services.Configure<AuthenticationConfiguration>(builder.Configuration.Ge
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IAuthTokenStorage, AuthTokenStorage>();
 builder.Services.AddSignalR();
+builder.Services.AddApiMetrics();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IAuthTokenStorage, AuthTokenStorage>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(config => config
@@ -65,4 +68,5 @@ app.UseCors();
 app.UseHttpsRedirection();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<AuthenticationMiddleware>();
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.Run();
