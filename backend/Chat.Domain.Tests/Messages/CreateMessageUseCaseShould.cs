@@ -31,10 +31,6 @@ public class CreateMessageUseCaseShould
         conversationExistsSetup = storage.Setup(s => s.ConversationExistsAsync(It.IsAny<Guid>(),
             It.IsAny<CancellationToken>()));
 
-        var validator = new Mock<IValidator<CreateMessageCommand>>();
-
-        validator.Setup(v => v.ValidateAsync(It.IsAny<CreateMessageCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
 
         var identity = new Mock<IIdentity>();
 

@@ -30,7 +30,7 @@ builder.Services.Configure<AuthenticationConfiguration>(builder.Configuration.Ge
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IAuthTokenStorage, AuthTokenStorage>();
 builder.Services.AddSignalR();
-builder.Services.AddApiMetrics();
+builder.Services.AddApiMetrics(builder.Configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthTokenStorage, AuthTokenStorage>();
 builder.Services.AddEndpointsApiExplorer();

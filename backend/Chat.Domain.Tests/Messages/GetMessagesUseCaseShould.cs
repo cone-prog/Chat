@@ -25,11 +25,7 @@ public class GetMessagesUseCaseShould
         storage = new Mock<IGetMessagesStorage>();
         getMessagesSetup = storage.Setup(s => s.GetMessagesAsync(It.IsAny<Guid>(), It.IsAny<Guid?>(), It.IsAny<Guid>(),
             It.IsAny<int>(), It.IsAny<CancellationToken>()));
-
-        var validator = new Mock<IValidator<GetMessagesQuery>>();
-        validator
-            .Setup(v => v.ValidateAsync(It.IsAny<GetMessagesQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
+        
 
         intentionManager = new Mock<IIntentionManager>();
         intentionIsAllowedSetup = intentionManager.Setup(i => i.IsAllowed(It.IsAny<MessageIntentions>()));

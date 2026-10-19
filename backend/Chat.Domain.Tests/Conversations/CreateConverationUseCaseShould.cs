@@ -35,11 +35,6 @@ public class CreateConverationUseCaseShould
         intentionManager = new Mock<IIntentionManager>();
         intentionIsAllowedSetup = intentionManager.Setup(i => i.IsAllowed(It.IsAny<ConversationIntentions>()));
 
-        var validator = new Mock<IValidator<CreateConversationCommand>>();
-        validator.Setup(v => v.ValidateAsync(It.IsAny<CreateConversationCommand>(),
-            It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
-
         sut = new CreateConversationUseCase(intentionManager.Object,
             storage.Object, identityProvider.Object);
     }

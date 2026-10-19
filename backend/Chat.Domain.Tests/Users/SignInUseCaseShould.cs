@@ -19,11 +19,6 @@ public class SignInUseCaseShould
 
     public SignInUseCaseShould()
     {
-        var validator = new Mock<IValidator<SignInCommand>>();
-        validator
-            .Setup(v => v.ValidateAsync(It.IsAny<SignInCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
-
         var encryptor = new Mock<ISymmetricEncryptor>();
         encryptSetup = encryptor.Setup(e => e.Encrypt(It.IsAny<string>(),
             It.IsAny<CancellationToken>()));

@@ -17,11 +17,6 @@ public class SignOnUseCaseShould
 
     public SignOnUseCaseShould()
     {
-        var validator = new Mock<IValidator<SignOnCommand>>();
-        validator.Setup(v => v.ValidateAsync(It.IsAny<SignOnCommand>(), 
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
-        
         storage = new Mock<ISignOnStorage>();
         CreateUserSetup = storage.Setup(s => s.CreateUser(It.IsAny<string>(),It.IsAny<string>(), 
             It.IsAny<byte[]>(), It.IsAny<byte[]>(), It.IsAny<CancellationToken>()));
