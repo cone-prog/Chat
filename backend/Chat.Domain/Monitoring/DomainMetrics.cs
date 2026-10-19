@@ -3,9 +3,9 @@ using System.Diagnostics.Metrics;
 
 namespace Chat.Domain.Monitoring;
 
-public class DomainMetrics
+public class DomainMetrics(IMeterFactory factory)
 {
-    private readonly Meter meter = new Meter("Chat.Domain");
+    private readonly Meter meter = factory.Create("Chat.Domain");
     
     private readonly ConcurrentDictionary<string, Counter<int>> counters = new();
     
