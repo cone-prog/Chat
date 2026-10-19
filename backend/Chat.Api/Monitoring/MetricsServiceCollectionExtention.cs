@@ -20,9 +20,9 @@ public static class MetricsServiceCollectionExtentions
                 }))
             .WithTracing(builder => builder
                 .ConfigureResource(r => r.AddService("Chat"))
-                .AddAspNetCoreInstrumentation()
+                .AddAspNetCoreInstrumentation(cfg => 
+                    cfg.Filter += context => !context.Request.Path.Value!.Contains("metrics"))
                 .AddEntityFrameworkCoreInstrumentation()
-                .AddConsoleExporter()
                 .AddOtlpExporter(cfg =>
                     {
                         cfg.Endpoint = new Uri(configuration.GetConnectionString("Tracing")!);
