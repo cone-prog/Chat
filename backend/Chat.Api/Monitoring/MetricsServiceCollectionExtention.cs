@@ -1,4 +1,5 @@
-﻿using OpenTelemetry.Exporter;
+﻿using System.Diagnostics;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -20,9 +21,19 @@ public static class MetricsServiceCollectionExtentions
                 }))
             .WithTracing(builder => builder
                 .ConfigureResource(r => r.AddService("Chat"))
-                .AddAspNetCoreInstrumentation(cfg => 
-                    cfg.Filter += context => !context.Request.Path.Value!.Contains("metrics", StringComparison.InvariantCultureIgnoreCase))
-                .AddEntityFrameworkCoreInstrumentation()
+                .AddSource("Chat.Domain")
+                .AddAspNetCoreInstrumentation(cfg =>
+                    {
+                        cfg.Filter += context =>
+                            !context.Request.Path.Value!.Contains("metrics",
+                                StringComparison.InvariantCultureIgnoreCase);
+                        cfg.EnrichWithHttpResponse = (activity, response) =>
+                        {
+                            activity.SetStatus(ActivityStatusCode.Error);
+                            activity.SetTag("error", response.StatusCode >= 400);
+                        };
+                    })
+                    .AddEntityFrameworkCoreInstrumentation()
                 .AddOtlpExporter(cfg =>
                     {
                         cfg.Endpoint = new Uri(configuration.GetConnectionString("Tracing")!);

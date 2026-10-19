@@ -1,4 +1,5 @@
-﻿using Chat.Domain.Monitoring;
+﻿using System.Diagnostics;
+using Chat.Domain.Monitoring;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -12,11 +13,14 @@ public class MonitoringBehavior<TRequest, TResponse> (DomainMetrics metrics,
         CancellationToken cancellationToken)
     {
         if (request is not IMonitoredRequest monitoredRequest) return await next.Invoke(cancellationToken);
-
+        
+        using var activity = DomainMetrics.ActivitySource.StartActivity("usecase", ActivityKind.Internal, default(ActivityContext));
+        activity?.AddTag("chat.command", request.GetType().Name);
         try
         {
             var result = await next.Invoke(cancellationToken);
             monitoredRequest.MonitoreSucces(metrics);
+            activity!.SetTag("error", false);
             return result;
         }
 
@@ -24,6 +28,7 @@ public class MonitoringBehavior<TRequest, TResponse> (DomainMetrics metrics,
         {
             logger.LogError(ex, "Unhandled error caught while handling command {Command}",  request);
             monitoredRequest.MonitoreFailure(metrics);
+            activity!.SetTag("error", true);
             throw;
         }
     }

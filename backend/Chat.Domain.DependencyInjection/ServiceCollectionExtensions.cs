@@ -16,8 +16,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDomainServices(this IServiceCollection services)
     {
         services.AddMediatR(cnf =>
-            cnf.AddOpenBehavior(typeof(ValidationBehavior<,>))
-                .AddOpenBehavior(typeof(MonitoringBehavior<,>))
+            cnf.AddOpenBehavior(typeof(MonitoringBehavior<,>))
+                .AddOpenBehavior(typeof(ValidationBehavior<,>))
                 .RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(Conversation))!));
         
         services
