@@ -21,7 +21,7 @@ public static class MetricsServiceCollectionExtentions
             .WithTracing(builder => builder
                 .ConfigureResource(r => r.AddService("Chat"))
                 .AddAspNetCoreInstrumentation(cfg => 
-                    cfg.Filter += context => !context.Request.Path.Value!.Contains("metrics"))
+                    cfg.Filter += context => !context.Request.Path.Value!.Contains("metrics", StringComparison.InvariantCultureIgnoreCase))
                 .AddEntityFrameworkCoreInstrumentation()
                 .AddOtlpExporter(cfg =>
                     {
