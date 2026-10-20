@@ -21,29 +21,6 @@ services:
     volumes: 
       - chat-pg:/var/lib/postgresql
   
-  opensearch:
-    container_name: "chat-os"
-    image: "opensearchproject/opensearch:3"
-    ports:
-      - "9200:9200"
-      - "9600:9600"
-    environment:
-      discovery.type: "single-node"
-      DISABLE_SECURITY_PLUGIN: "true"
-    volumes:
-      - chat-logs:/usr/share/opensearch/data
-    
-  opensearch-dashboards:
-    container_name: 'chat-osd'
-    image: 'opensearchproject/opensearch-dashboards:3'
-    ports:
-      - '5601:5601'
-    environment:
-      OPENSEARCH_HOSTS: '["http://chat-os:9200"]'
-      DISABLE_SECURITY_DASHBOARDS_PLUGIN: 'true'
-    depends_on:
-      - opensearch
-  
   prometheus:
     container_name: 'chat-prom'
     image: 'prom/prometheus'
@@ -53,6 +30,15 @@ services:
     volumes:
       - ./prometheus.yaml:/etc/prometheus/prometheus.yml
       - chat-prom:/prometheus
+  
+  loki:
+    container_name: 'chat-loki'
+    image: grafana/loki:3.7.0
+    ports:
+      - '3100:3100'
+    volumes:
+      - ./loki-config.yaml:/mnt/config/loki-config.yaml 
+    command: --config.file=/mnt/config/loki-config.yaml
   
   grafana:
     container_name: 'chat-graf'
@@ -69,7 +55,7 @@ services:
       
   jaeger:
     container_name: 'chat-jaeger'
-    image: "cr.jaegertracing.io/jaegertracing/jaeger:2.22.0"
+    image: "cr.jaegertracing.io/jaegertracing/jaeger:2.20.0"
     ports:
       - '16686:16686' 
       - '4317:4317' 

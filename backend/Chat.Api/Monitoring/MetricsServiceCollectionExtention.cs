@@ -29,8 +29,13 @@ public static class MetricsServiceCollectionExtentions
                                 StringComparison.InvariantCultureIgnoreCase);
                         cfg.EnrichWithHttpResponse = (activity, response) =>
                         {
-                            activity.SetStatus(ActivityStatusCode.Error);
-                            activity.SetTag("error", response.StatusCode >= 400);
+                            if (response.StatusCode >= 400)
+                            {
+                                activity.SetStatus(ActivityStatusCode.Error);
+                                activity.SetTag("error", true);
+                            }
+                            else  activity.SetTag("error", false);
+                            
                         };
                     })
                     .AddEntityFrameworkCoreInstrumentation()
