@@ -62,6 +62,16 @@ services:
       - '4318:4318'
       - '5778:5778'
       - '9411:9411'
-     
+  
+  api:
+    build:
+      context: .
+    container_name: 'chat-api'
+    ports:
+      - '8080:8080'
+    environment:
+      ConnectionStrings__Tracing: 'http://chat-jaeger:4317'
+      ConnectionStrings__PgConnection: 'Host=chat-db;Port=5432;Database=chat;Username=postgres;Password=5258'
+      ConnectionStrings__Logs: 'http://chat-loki:3100'
     
     

@@ -4,6 +4,6 @@
     scrape_timeout: 3s
     static_configs:
       - targets:
-        - 'host.docker.internal:5256'
+        - 'chat-api:8080'
         labels:
           app: chat

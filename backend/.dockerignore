@@ -1,0 +1,10 @@
+﻿bin/
+obj/
+*Tests/
+*E2E/
+docker-compose.yaml
+dockerfile
+prometheus.yaml
+loki-config.yaml
+Chat.sln.DotSettings.user
+
