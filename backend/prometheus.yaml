@@ -2,8 +2,14 @@
   - job_name: chat-scrape
     scrape_interval: 15s
     scrape_timeout: 3s
-    static_configs:
-      - targets:
-        - 'chat-api:8080'
-        labels:
-          app: chat
+      static_configs:
+      
+        - targets:
+          - 'chat-api:8080'
+          labels:
+            app: chat-docker
+            
+        - targets:
+          - 'host.docker.internal:5256'
+          labels:
+            app: chat-local

@@ -4,6 +4,8 @@ using Chat.Domain.UseCase.Users.SignIn;
 using Chat.Domain.UseCase.Users.SignOn;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace Chat.Api.Controllers;
 
@@ -32,5 +34,18 @@ public class AccountController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command, cancellationToken);
         storage.Store(HttpContext,result.token);
         return Ok(result);
+    }
+
+    [HttpGet("switch-log-level")]
+    public Task<IActionResult> SwitchLogLevel(
+        [FromServices] LoggingLevelSwitch loggingLevelSwitch)
+    {
+        loggingLevelSwitch.MinimumLevel = loggingLevelSwitch.MinimumLevel switch
+        {
+            LogEventLevel.Information => LogEventLevel.Error,
+            _ =>  LogEventLevel.Information
+        };
+
+        return Task.FromResult((IActionResult)Ok());
     }
 }

@@ -20,13 +20,14 @@ public class MonitoringBehavior<TRequest, TResponse> (DomainMetrics metrics,
         {
             var result = await next.Invoke(cancellationToken);
             monitoredRequest.MonitoreSucces(metrics);
+            logger.LogInformation("request with command {command} handled successfully", request);
             activity!.SetTag("error", false);
             return result;
         }
 
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unhandled error caught while handling command {Command}",  request);
+            logger.LogError(ex, "Unhandled error caught while handling command {command}",  request);
             monitoredRequest.MonitoreFailure(metrics);
             activity!.SetTag("error", true);
             throw;
